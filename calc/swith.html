@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+	*{
+		margin: 0;
+		padding: 0;
+	}
+		
+		body{
+			padding-top: 3rem;
+			background-color: #0d6d6d;
+
+		}
+			.box{
+			width: 18%;
+			overflow: hidden;
+			margin: 0 auto
+		}
+		.box button{
+			width: 25%;
+			display: block;
+			float: left;
+			height: 3rem;
+			line-height: 3rem;
+			font-size: 1.4rem;
+			background-color: #58a0a0;
+			border: 1px solid #56c7c7;
+		}
+		button:hover{
+			background-color: #95cccc;
+		}
+		input{
+			display: block;
+			width: 18%;
+			height: 3rem;
+			margin: 0 auto;
+			font-size: 1.4rem;
+			background-color: #56c7c7;
+			border:none;
+		}
+		:focus{
+			background-color: #52bfab;
+		}
+		h1{
+			width: 20%;
+			padding-left: 1%;
+			padding-bottom: 1.5rem;
+			margin: 0 auto;
+			color: #c3eaea;
+		}
+	</style>
+</head>
+<body>
+	<h1>简单的二目计算器</h1>
+	<input class="calc" type="text">
+	<div class="box">
+		<button value="cle" class="cle">C</button>
+		<button value="del" class="del">←</button>
+		<button value="^" class="sym">^</button>
+		<button value="%" class="sym">%</button>
+		<button value="7" class='numb' >7</button>
+		<button value="8" class='numb' >8</button>
+		<button value="9" class='numb' >9</button>
+		<button value="/" class="sym">÷</button>
+		<button value="4" class='numb' >4</button>
+		<button value="5" class='numb' >5</button>
+		<button value="6" class='numb' >6</button>
+		<button value="*" class="sym">×</button>
+		<button value="1" class='numb' >1</button>
+		<button value="2" class='numb' >2</button>
+		<button value="3" class='numb' >3</button>
+		<button value="-" class="sym">-</button>
+		<button value="0" class='numb'>0</button>
+		<button value="." class='numb'>.</button>
+		<button value="=" class="tatol">=</button>
+		<button value="+" class="sym">+</button>
+	</div>
+
+	<script src='jquery-1.10.2.js'></script>
+	<script>
+		var str='',sign='',num='',txt='';
+		
+		$('.numb,.del,.cle').click(function(){
+				sign = $('.calc').val();
+				num=$(this).text();
+				console.log(num);
+				txt=sign+num;
+			if(num =='C'){
+				txt=''
+				$('.calc').val(txt);
+			}else if(num =='←'){
+				txt=txt.substr(0,txt.length-2)
+				$('.calc').val(txt);
+			}else{
+				$('.calc').val(txt);
+			}
+
+		});
+		var numString='0123456789.';
+		var symbolString='+-×÷^%';
+		
+		var result=0;
+		$('.tatol').click(function(){
+			sign = $('.calc').val();
+			num=$(this).text();
+			console.log(num);
+			txt=sign+num;
+			$('.calc').val(txt);
+			// var arrSymbol= new Array();
+			var num1=''
+			var num2=''
+			var str=$('.calc').val();//12+34=
+			var arrNum=new Array();
+			console.log('str.length '+str.length);
+			var len=str.length;//5
+			console.log('len: '+len);
+			for(var i=0;i<len;i++){
+				var temp = str.substr(i,1);
+				console.log('temp: '+temp);
+				console.log(numString.indexOf(temp));
+				if(numString.indexOf(temp)!=-1){
+					num1=num1+temp;
+				}
+				else{
+					console.log('num1: '+num1);
+					if(num1!=''){
+						arrNum.push(num1);
+					}
+					num1='';
+				}
+			}
+			console.log(arrNum);
+
+			for(var i=0;i<len;i++){
+				var temp = str.substr(i,1);
+				console.log('temp: '+temp);
+				console.log('symbolString.index: '+symbolString.indexOf(temp));
+				if(symbolString.indexOf(temp)!=-1){
+					arrNum.push(temp);
+				}
+			}
+			console.log(arrNum);
+			
+			
+			console.log(Number(arrNum[0])*Number(arrNum[1]));
+			switch (arrNum[2]){
+				case '+': result = Number(arrNum[0])+Number(arrNum[1]);break;
+				case '-': result = Number(arrNum[0])-Number(arrNum[1]);break;
+				case '×': result = Number(arrNum[0])*Number(arrNum[1]);break;
+				case '÷': result = Number(arrNum[0])/Number(arrNum[1]);break;
+				case '^': result = Math.pow(Number(arrNum[0]),Number(arrNum[1]));break;
+				case '%': result = Number(arrNum[0])%Number(arrNum[1]);break;
+			}
+			console.log('result: '+result);
+			if(arrNum.length>3){
+				$('.calc').val('');
+				alert('请按规则选择一个运算符！')
+				arrNum=[];
+				num1=0;
+				num2=0;
+				console.log(arrNum);
+			}else{
+				$('.calc').val(str+result+'');
+			}
+		});
+		$('.box .sym').click(function(){
+			var txtVal=$('.calc').val();
+			console.log(txtVal);
+			if(txtVal.indexOf('=')!=-1){
+				$('.calc').val(result+$(this).text());
+				arrNum=0;
+				num1=0;
+				num2=0;
+			}
+			else{
+				sign = $('.calc').val();
+				num=$(this).text();
+				console.log(num);
+				txt=sign+num;
+				$('.calc').val(txt);
+			}
+		});
+	</script>
+</body>
+</html>
